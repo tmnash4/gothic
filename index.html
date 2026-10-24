@@ -59,7 +59,7 @@ a, button, div, input {
         width: 50vw;
         aspect-ratio: 1/1;
         left: 30%;
-        top: 10dvh;
+        top: 7dvh;
         position: absolute;
         visibility: hidden;
         opacity: 0;
@@ -99,6 +99,15 @@ a, button, div, input {
         }
 }
 
+    @media only screen and (max-width: 380px) {
+        #text-div{
+            width: 60vw;
+            left: 20%;
+            top: 0;
+        }
+}
+
+
     
    
 </style>
@@ -132,6 +141,7 @@ a, button, div, input {
         textDiv.style.opacity = 1;
     }, 1500);
 
+   console.log(window.innerWidth);
 
 
     let intervalCount = 0;
