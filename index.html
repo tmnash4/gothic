@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>gothic</title>
+    </head>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/tone/14.5.44/Tone.js'></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body onclick="() => {e => e.preventDefault()}">
+            <div id="text-div">
+                <div id="inside-text-div">Please turn your phone off silent mode and turn your volume up! Then <b>Press the raven!</b></div>
+            </div>
+    <div id="main-div">
+        <div id="bird-div">𓄿</div>
+    </div>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+body {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    width: 100vw;
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+a, button, div, input {
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+
+
+    #main-div {
+        display: flex;
+        width: 100vw;
+        height: 100dvh;
+        background-color: black;
+        overflow: hidden;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+
+    #bird-div {
+        background-color: white;
+        font-size: 10rem;
+        transition: opacity 2s;
+    }
+
+    #text-div {
+        display: flex;
+        background-color: white;
+        font-size: 1.5rem;
+        clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 80%, 95% 85%, 22.53% 85%, 8% 100%, 12.06% 84.63%, 5% 85%, 0% 80%, 0% 5%);       
+        width: 50vw;
+        aspect-ratio: 1/1;
+        left: 30%;
+        top: 10%;
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 2s;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #inside-text-div {
+        top: -10%;
+        position: relative;
+    }
+
+    @media only screen and (min-width: 768px) {
+        #text-div{
+            width: 30vw;
+            top: 2%;
+            left: 45%;
+        }
+    }
+
+    @media screen and (orientation: landscape) and (max-height: 500px) {
+  #text-div{
+            width: 30vw;
+            top: 2%;
+            left: 60%;
+        }
+}
+
+    
+
+    @media only screen and (min-width: 1024px) {
+        #text-div{
+            width: 18vw;
+            top: 2%;
+            left: 45%;
+        }
+}
+
+    
+   
+</style>
+
+<script>
+
+ 
+
+
+    let raven = document.getElementById("bird-div");
+    let textDiv = document.getElementById("text-div");
+    let ravenSound = new Tone.Player("media/raven.mp3").toDestination();
+    let ravenSound1 = new Tone.Player("media/raven1.mp3").toDestination();
+
+    let poemWordArray = [];
+
+    for (i=0;i<67;i++) {
+        let player = new Tone.Player(`media/poem/line${i}.mp3`).toDestination();
+        poemWordArray.push(player);
+    }
+
+    let poemTextArray = ["Open", "here", "I", "flung", "the", "shutter", "when", "with", "many", "a", "flirt", "and",  "flutter", "In", "there", "stepped", "a", "stately", "Raven", "of", "the", "saintly", "days", "of", "yore;", "Not", "the", "least", "obeisance", "made", "he;", "not", "a", "minute", "stopped", "or", "stayed", "he;", "But,","with", "mien", "of", "lord", "or", "lady,","perched", "above", "my", "chamber", "door—","Perched", "upon", "a", "bust", "of", "Pallas", "just", "above", "my", "chamber", "door—", "Perched,","and", "sat,","and", "nothing", "more."]
+
+    let ravenPressedAgain = false;
+    let createBirdInterval;
+    let birdDivArray = [];
+
+
+    setTimeout(() => {
+        textDiv.style.visibility = "visible";
+        textDiv.style.opacity = 1;
+    }, 1500);
+
+
+
+    let intervalCount = 0;
+    let thenum = 0;
+
+
+    function makeMiniRaven() {
+                  if (ravenPressedAgain) {
+                ravenSound1.start();
+                textDiv.style.opacity = 0;
+                raven.style.opacity = 0;
+                setTimeout(() => {
+                    raven.style.visibility = "hidden";
+                    textDiv.style.visibility = "hidden"
+                    textDiv.innerHTML = "";
+                }, 2000)
+
+                createBirdInterval = setInterval(() => {
+                    let birdDiv = document.createElement("div");
+                    birdDiv.innerHTML = "𓄿"
+
+                    Object.assign(birdDiv.style, {
+                        backgroundColor: "white",
+                        left: `${randomInteger(5, 85)}%`,
+                        top: `${randomInteger(3, 85)}%`,
+                        position: "absolute",
+                        opacity: 0,
+                        transition: "opacity 2s",
+                        fontSize: "3rem",
+                        fontFamily: "Pirata One"
+                    })
+
+                    document.body.appendChild(birdDiv);
+                    birdDivArray.push(birdDiv);
+                    setTimeout(() => {
+                        birdDiv.style.opacity = 1;
+                    }, 2000)
+          
+
+                    birdDiv.addEventListener("click", () => {
+                        if (intervalCount <= 66) {
+                            poemWordArray[intervalCount].start();
+                        }
+                        if (intervalCount<= 66) {
+                        birdDiv.style.fontSize = "2rem"
+                        birdDiv.innerHTML = poemTextArray[intervalCount];
+                        intervalCount++
+                        } else {
+                            birdDiv.innerHTML = ""
+                        }
+                        if (intervalCount >= 66) {
+                            clearInterval(createBirdInterval);
+                            // setTimeout(() => {
+                            //     birdDivArray.forEach(bird => {
+                            //         setTimeout(() => {
+                            //          bird.remove();
+                            //          thenum += 200
+                            //         }, `${thenum}ms`)
+                            //     })
+                            // }, 1000)
+
+                            removeBirdInterval = setInterval(() => {
+                                if (birdDivArray.length > 0) {
+                                    birdDivArray.shift().style.opacity = 0;
+                                    setTimeout(() => {
+                                    if (birdDivArray[0]) {
+                                    birdDivArray.shift.remove()
+                                    }
+                                     }, 2000)
+                                } else {
+                                    clearInterval(removeBirdInterval);
+                                 
+                                    setTimeout(() => {
+                                    raven.removeEventListener("click", makeMiniRaven)
+                                    textDiv.innerHTML = "Thanks for playing this short demo!"
+                                    textDiv.style.visibility = "visible";
+                                    textDiv.style.opacity = 1;
+                                    raven.style.visibility = "visible";
+                                    raven.style.opacity = 1;
+                                    }, 1000)
+                                }
+                            }, 500)
+                        }
+                    });
+                }, 1500)
+                return;
+
+            }
+                    ravenSound.start();
+                    textDiv.innerHTML = "Press me again!"
+                    ravenPressedAgain = true;
+    }
+
+
+    setTimeout(() => {
+        raven.addEventListener("click", makeMiniRaven)
+    }, 1500)
+  
+
+    async function startAudio() {
+       await Tone.start();
+       console.log("hello there");
+    }
+
+    function randomInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+</script>
+
+</body>
+</html>
